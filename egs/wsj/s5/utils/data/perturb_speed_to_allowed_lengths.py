@@ -128,7 +128,7 @@ def read_kaldi_mapfile(path):
     """
 
     m = {}
-    with open(path, 'r', encoding='latin-1') as f:
+    with open(path, 'r', encoding='utf8') as f:
         for line in f:
             line = line.strip()
             sp_pos = line.find(' ')
@@ -145,19 +145,19 @@ def generate_kaldi_data_files(utterances, outdir):
     logger.info("Exporting to {}...".format(outdir))
     speakers = {}
 
-    with open(os.path.join(outdir, 'text'), 'w', encoding='latin-1') as f:
+    with open(os.path.join(outdir, 'text'), 'w', encoding='utf8') as f:
         for utt in utterances:
             f.write(utt.to_kaldi_utt_str() + "\n")
 
-    with open(os.path.join(outdir, 'wav.scp'), 'w', encoding='latin-1') as f:
+    with open(os.path.join(outdir, 'wav.scp'), 'w', encoding='utf8') as f:
         for utt in utterances:
             f.write(utt.to_kaldi_wave_str() + "\n")
 
-    with open(os.path.join(outdir, 'utt2dur'), 'w', encoding='latin-1') as f:
+    with open(os.path.join(outdir, 'utt2dur'), 'w', encoding='utf8') as f:
         for utt in utterances:
             f.write(utt.to_kaldi_dur_str() + "\n")
 
-    with open(os.path.join(outdir, 'utt2spk'), 'w', encoding='latin-1') as f:
+    with open(os.path.join(outdir, 'utt2spk'), 'w', encoding='utf8') as f:
         for utt in utterances:
             f.write(utt.id + " " + utt.speaker + "\n")
             if utt.speaker not in speakers:
@@ -165,7 +165,7 @@ def generate_kaldi_data_files(utterances, outdir):
             else:
                 speakers[utt.speaker].append(utt.id)
 
-    with open(os.path.join(outdir, 'spk2utt'), 'w', encoding='latin-1') as f:
+    with open(os.path.join(outdir, 'spk2utt'), 'w', encoding='utf8') as f:
         for s in speakers:
             f.write(s + " ")
             for utt in speakers[s]:
@@ -222,8 +222,8 @@ def find_allowed_durations(start_dur, end_dur, args):
 
     allowed_durations = []
     d = start_dur
-    with open(os.path.join(args.dir, 'allowed_durs.txt'), 'w', encoding='latin-1') as durs_fp, \
-           open(os.path.join(args.dir, 'allowed_lengths.txt'), 'w', encoding='latin-1') as lengths_fp:
+    with open(os.path.join(args.dir, 'allowed_durs.txt'), 'w', encoding='utf8') as durs_fp, \
+           open(os.path.join(args.dir, 'allowed_lengths.txt'), 'w', encoding='utf8') as lengths_fp:
         while d < end_dur:
             length = int(d * 1000 - args.frame_length) / args.frame_shift + 1
             if length % args.frame_subsampling_factor != 0:
